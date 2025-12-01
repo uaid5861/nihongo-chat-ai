@@ -4,7 +4,7 @@ export async function onRequestPost(context) {
   const { action, word, sentence, translation } = body;
   
   const API_KEY = env.DEEPSEEK_API_KEY; // 需要在后台设置环境变量
-  const API_URL = "https://api.deepseek.com/chat/completions";
+  const API_URL = "https://api.deepseek.com";
 
   let systemPrompt = "";
   let userContent = "";

@@ -1,7 +1,7 @@
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
 
-// ../.wrangler/tmp/bundle-zfLYTP/checked-fetch.js
+// ../.wrangler/tmp/bundle-yM0FWP/checked-fetch.js
 var urls = /* @__PURE__ */ new Set();
 function checkURL(request, init) {
   const url = request instanceof URL ? request : new URL(
@@ -33,7 +33,7 @@ async function onRequestPost(context) {
   const body = await request.json();
   const { action, word, sentence, translation } = body;
   const API_KEY = env.DEEPSEEK_API_KEY;
-  const API_URL = "https://api.deepseek.com/chat/completions";
+  const API_URL = "https://api.deepseek.com";
   let systemPrompt = "";
   let userContent = "";
   if (action === "generate") {
@@ -571,7 +571,7 @@ var jsonError = /* @__PURE__ */ __name(async (request, env, _ctx, middlewareCtx)
 }, "jsonError");
 var middleware_miniflare3_json_error_default = jsonError;
 
-// ../.wrangler/tmp/bundle-zfLYTP/middleware-insertion-facade.js
+// ../.wrangler/tmp/bundle-yM0FWP/middleware-insertion-facade.js
 var __INTERNAL_WRANGLER_MIDDLEWARE__ = [
   middleware_ensure_req_body_drained_default,
   middleware_miniflare3_json_error_default
@@ -603,7 +603,7 @@ function __facade_invoke__(request, env, ctx, dispatch, finalMiddleware) {
 }
 __name(__facade_invoke__, "__facade_invoke__");
 
-// ../.wrangler/tmp/bundle-zfLYTP/middleware-loader.entry.ts
+// ../.wrangler/tmp/bundle-yM0FWP/middleware-loader.entry.ts
 var __Facade_ScheduledController__ = class ___Facade_ScheduledController__ {
   constructor(scheduledTime, cron, noRetry) {
     this.scheduledTime = scheduledTime;

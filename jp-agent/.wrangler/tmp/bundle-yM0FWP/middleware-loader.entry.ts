@@ -3,12 +3,12 @@
 // export dynamically through wrangler, or we can potentially let users directly
 // add them as a sort of "plugin" system.
 
-import ENTRY, { __INTERNAL_WRANGLER_MIDDLEWARE__ } from "/media/tengfei/code/nihongochat/nihongo-chatai/jp-agent/.wrangler/tmp/bundle-zfLYTP/middleware-insertion-facade.js";
+import ENTRY, { __INTERNAL_WRANGLER_MIDDLEWARE__ } from "/media/tengfei/code/nihongochat/nihongo-chatai/jp-agent/.wrangler/tmp/bundle-yM0FWP/middleware-insertion-facade.js";
 import { __facade_invoke__, __facade_register__, Dispatcher } from "/home/tengfei/.local/share/fnm/node-versions/v22.19.0/installation/lib/node_modules/wrangler/templates/middleware/common.ts";
-import type { WorkerEntrypointConstructor } from "/media/tengfei/code/nihongochat/nihongo-chatai/jp-agent/.wrangler/tmp/bundle-zfLYTP/middleware-insertion-facade.js";
+import type { WorkerEntrypointConstructor } from "/media/tengfei/code/nihongochat/nihongo-chatai/jp-agent/.wrangler/tmp/bundle-yM0FWP/middleware-insertion-facade.js";
 
 // Preserve all the exports from the worker
-export * from "/media/tengfei/code/nihongochat/nihongo-chatai/jp-agent/.wrangler/tmp/bundle-zfLYTP/middleware-insertion-facade.js";
+export * from "/media/tengfei/code/nihongochat/nihongo-chatai/jp-agent/.wrangler/tmp/bundle-yM0FWP/middleware-insertion-facade.js";
 
 class __Facade_ScheduledController__ implements ScheduledController {
 	readonly #noRetry: ScheduledController["noRetry"];

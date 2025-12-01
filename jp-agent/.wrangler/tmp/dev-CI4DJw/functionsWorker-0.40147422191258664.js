@@ -60,7 +60,7 @@ async function onRequestPost(context) {
   const body = await request.json();
   const { action, word, sentence, translation } = body;
   const API_KEY = env.DEEPSEEK_API_KEY;
-  const API_URL = "https://api.deepseek.com/chat/completions";
+  const API_URL = "https://api.deepseek.com";
   let systemPrompt = "";
   let userContent = "";
   if (action === "generate") {
