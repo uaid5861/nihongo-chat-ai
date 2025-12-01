@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日语私教 Agent</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        .fade-enter-active, .fade-leave-active { transition: opacity 0.5s; }
+        .fade-enter-from, .fade-leave-to { opacity: 0; }
+        /* 简单的 Markdown 样式 */
+        .prose p { margin-bottom: 0.5rem; }
+        .prose strong { color: #d97706; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen font-sans text-gray-800">
+    <div id="app" class="max-w-2xl mx-auto p-4 flex flex-col h-screen">
+        
+        <header class="bg-white shadow rounded-lg p-4 mb-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-600">🇯🇵 AI 日语私教</h1>
+            <button @click="showHistory = !showHistory" class="text-sm text-gray-500 underline">
+                {{ showHistory ? '返回练习' : '历史记录' }}
+            </button>
+        </header>
+
+        <main class="flex-1 overflow-y-auto bg-white shadow rounded-lg p-6 relative">
+            
+            <div v-if="showHistory" class="space-y-4">
+                <h2 class="text-lg font-bold mb-4">学习记录 (开发中 - 需添加读取接口)</h2>
+                <p class="text-gray-400">这里可以调用 D1 的读取接口展示历史...</p>
+            </div>
+
+            <div v-else class="flex flex-col space-y-6">
+                
+                <div v-if="step === 0" class="space-y-3">
+                    <label class="block text-sm font-medium">今天想学哪个词？</label>
+                    <input v-model="currentWord" @keyup.enter="getSentence" type="text" placeholder="例如：乗り越える" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 outline-none">
+                    <button @click="getSentence" :disabled="loading" class="w-full bg-indigo-600 text-white p-3 rounded-lg disabled:opacity-50">
+                        {{ loading ? '思考中...' : '出题' }}
+                    </button>
+                </div>
+
+                <div v-if="step >= 1" class="animate-fade bg-blue-50 p-4 rounded-lg border border-blue-100">
+                    <p class="text-xs text-blue-500 font-bold mb-1">请翻译这句话:</p>
+                    <p class="text-lg font-medium">{{ targetSentence }}</p>
+                </div>
+
+                <div v-if="step === 1" class="space-y-3 animate-fade">
+                    <textarea v-model="userTranslation" placeholder="输入你的日文翻译..." class="w-full p-3 border rounded-lg h-24 focus:ring-2 focus:ring-green-500 outline-none"></textarea>
+                    <button @click="submitTranslation" :disabled="loading" class="w-full bg-green-600 text-white p-3 rounded-lg disabled:opacity-50">
+                        {{ loading ? '批改中...' : '提交答案' }}
+                    </button>
+                </div>
+
+                <div v-if="step === 2" class="animate-fade bg-green-50 p-4 rounded-lg border border-green-100 prose">
+                    <p class="text-xs text-green-600 font-bold mb-2">AI 老师反馈:</p>
+                    <div v-html="formatFeedback(feedback)" class="text-sm leading-relaxed whitespace-pre-wrap"></div>
+                    <button @click="reset" class="mt-4 w-full bg-gray-200 text-gray-700 p-2 rounded hover:bg-gray-300">下一个词</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+        createApp({
+            setup() {
+                const step = ref(0);
+                const loading = ref(false);
+                const showHistory = ref(false);
+                const currentWord = ref('');
+                const targetSentence = ref('');
+                const userTranslation = ref('');
+                const feedback = ref('');
+
+                const callApi = async (data) => {
+                    const res = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    return await res.json();
+                };
+
+                const getSentence = async () => {
+                    if (!currentWord.value) return;
+                    loading.value = true;
+                    try {
+                        const res = await callApi({ action: 'generate', word: currentWord.value });
+                        targetSentence.value = res.result;
+                        step.value = 1;
+                    } finally { loading.value = false; }
+                };
+
+                const submitTranslation = async () => {
+                    if (!userTranslation.value) return;
+                    loading.value = true;
+                    try {
+                        const res = await callApi({
+                            action: 'correct',
+                            word: currentWord.value,
+                            sentence: targetSentence.value,
+                            translation: userTranslation.value
+                        });
+                        feedback.value = res.result;
+                        step.value = 2;
+                    } finally { loading.value = false; }
+                };
+
+                const reset = () => {
+                    step.value = 0;
+                    currentWord.value = '';
+                    targetSentence.value = '';
+                    userTranslation.value = '';
+                    feedback.value = '';
+                };
+
+                const formatFeedback = (text) => {
+                    // 简单的换行转br
+                    return text.replace(/\n/g, '<br>');
+                };
+
+                return { step, loading, currentWord, targetSentence, userTranslation, feedback, getSentence, submitTranslation, reset, formatFeedback, showHistory };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>

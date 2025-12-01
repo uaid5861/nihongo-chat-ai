@@ -1,0 +1,8 @@
+name = "jp-agent"
+pages_build_output_dir = "public"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB" # 代码里用 env.DB 调用
+database_name = "japanese-learning-db"
+database_id = "3ace944b-951d-4e51-8af6-1dca8312eb3a"

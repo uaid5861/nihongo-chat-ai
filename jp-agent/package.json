@@ -1,0 +1,25 @@
+{
+  "name": "jp-agent",
+  "version": "1.0.0",
+  "description": "AI 驱动的日语学习助手",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "build": "echo 'No build step required'",
+    "start": "wrangler dev"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  },
+  "keywords": [
+    "japanese",
+    "language-learning",
+    "ai",
+    "cloudflare-workers"
+  ],
+  "author": "",
+  "license": "MIT"
+}
